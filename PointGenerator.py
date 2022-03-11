@@ -22,10 +22,10 @@ def generate(number = 10, filename = "no_file"):
 
     return list
 
-testPoint = generate(30)
+testPoint = generate(50)
 
 a, b, c = greedyTSP(testPoint)
 print(len(a))
 print(c)
 
-drawProgress(testPoint, a, 3, 0.2)
+drawProgress(testPoint, a, 5, 0.1)

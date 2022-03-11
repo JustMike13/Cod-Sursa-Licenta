@@ -5,24 +5,42 @@ from time import sleep
 
 maxint = 2147483647
 def greedyTSP(points):
-    print("testGreedy1")
     distances = calculateDistances(points)
-    print("testGreedy2")
     l = len(points)
     lines = []
-
+    orderedDistances = orderAscending(distances)
+    print("linii ordonate:", orderedDistances
+          )
     neighbors = [[0 for i in range(l)] for i in range(l)]
-    a1, b1, c1 = smallest(distances)
-    print("testGreedy3")
+    smallestDistance = orderedDistances[0]
+    orderedDistances = orderedDistances[1:]
+    a1, b1 = smallestDistance
+    c1 = distances[a1][b1]
     lines.append((a1, b1, c1))
     neighbors[a1][b1] = neighbors[b1][a1] = 1
     notFinal = True
+    print("inainte:", len(orderedDistances))
+    ok = True
+    repeats = 0
     while notFinal:
-        print("testGreedy4")
         existingCycle = True
         while existingCycle:
-            print("testGreedy5")
-            a, b, c = smallest(distances)
+            try:
+                nextSmallestDistance = orderedDistances[0]
+                orderedDistances = orderedDistances[1:]
+                repeats += 1
+            except IndexError:
+                if ok:
+                    print("dupa:", len(orderedDistances))
+                    print("repetari:", repeats)
+                    print("linii:", len(lines))
+                    print(points)
+                    print("")
+                    print(lines)
+                    ok = False
+                break
+            a, b = nextSmallestDistance
+            c = distances[a][b]
             sa = 0
             sb = 0
             for si in range(len(neighbors[a1])):
@@ -84,7 +102,9 @@ def orderAscending(dist):
     l = len(dist)
     orderedList = []
     for i in range(l - 1):
+        print("        ", i)
         for j in range(i + 1, l):
+            print("           ", i,"   ",j)
             if len(orderedList) == 0:
                 orderedList.append((i, j))
             else:
@@ -98,14 +118,14 @@ def orderAscending(dist):
                     for k in range(len(orderedList) - 1):
                         listElem = orderedList[k]
                         nextElem = orderedList[k + 1]
-                        if dist[listElem[0]][listElem[1]] < dist[i][j] and dist[nextElem[0]][nextElem[1]] > dist[i][j]:
+                        if dist[listElem[0]][listElem[1]] < dist[i][j] and dist[nextElem[0]][nextElem[1]] >= dist[i][j]:
                             orderedList.insert(k + 1, (i, j))
                             break
     return orderedList
 
 testPoints = [(1, 3), (3, 2), (7, 4), (3, 5), (5.5, 6)]
 testDistances = calculateDistances(testPoints)
-print(orderAscending(testDistances))
+# print(orderAscending(testDistances))
 # for i in testDistances:
 #     print(i)
 # for i in range(5):
