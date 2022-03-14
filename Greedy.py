@@ -9,8 +9,6 @@ def greedyTSP(points):
     l = len(points)
     lines = []
     orderedDistances = orderAscending(distances)
-    print("linii ordonate:", orderedDistances
-          )
     neighbors = [[0 for i in range(l)] for i in range(l)]
     smallestDistance = orderedDistances[0]
     orderedDistances = orderedDistances[1:]
@@ -19,26 +17,14 @@ def greedyTSP(points):
     lines.append((a1, b1, c1))
     neighbors[a1][b1] = neighbors[b1][a1] = 1
     notFinal = True
-    print("inainte:", len(orderedDistances))
     ok = True
     repeats = 0
     while notFinal:
         existingCycle = True
         while existingCycle:
-            try:
-                nextSmallestDistance = orderedDistances[0]
-                orderedDistances = orderedDistances[1:]
-                repeats += 1
-            except IndexError:
-                if ok:
-                    print("dupa:", len(orderedDistances))
-                    print("repetari:", repeats)
-                    print("linii:", len(lines))
-                    print(points)
-                    print("")
-                    print(lines)
-                    ok = False
-                break
+            nextSmallestDistance = orderedDistances[0]
+            orderedDistances = orderedDistances[1:]
+
             a, b = nextSmallestDistance
             c = distances[a][b]
             sa = 0
@@ -102,9 +88,7 @@ def orderAscending(dist):
     l = len(dist)
     orderedList = []
     for i in range(l - 1):
-        print("        ", i)
         for j in range(i + 1, l):
-            print("           ", i,"   ",j)
             if len(orderedList) == 0:
                 orderedList.append((i, j))
             else:

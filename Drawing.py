@@ -18,7 +18,7 @@ def drawGraph(points, lines):
         plt.plot(lx, ly, linewidth = 2, color='#1f77b4')
     plt.show()
 
-def drawProgress(points, lines, skip = 1, pause = 0.3):
+def drawProgress(points = [], lines = [], skip = 1, pause = 0.3):
     for i in range((len(lines) + 1) // skip + 2):
         if i * skip > len(lines) + 1:
             drawGraph(points, lines)

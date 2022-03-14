@@ -1,26 +1,31 @@
 import matplotlib.pyplot as plt
 from time import sleep
 from Drawing import drawGraph
-from GreedyTSP import greedyTSP
+from Greedy import greedyTSP
 from CalculateDistances import calculateDistances
+from NearestNeighbour import nearestNeighbourTSP
+from PointGenerator import generate
+import time
+testPoints = generate(100)
 
-# testPoints = [(1, 5), (2, 1), (3, 4)]
-# testLines = [[(1, 5), (2, 1)], [(2, 1), (3, 4)], [(3, 4), (1, 5)]]
-#
-# for i in range(len(testLines) + 1):
-#     drawGraph(testPoints, testLines[:i])
-#     sleep(1)
+greedystart = time.time()
+a, b, c = greedyTSP(testPoints)
+greedyend = time.time()
+print("Greedy cost:                   ", c)
+print("Greedy time:                   ", greedyend - greedystart)
+print("")
+nnrstart = time.time()
+d, e = nearestNeighbourTSP(testPoints, "random")
+nnrend = time.time()
+print("Nearest Neighbour random cost: ", e)
+print("Nearest Neighbour random time: ", nnrend - nnrstart)
+print("")
 
 
-testPoints = [(1, 3), (7, 3), (7, 7), (1, 7), (5, 4), (5, 6), (3, 6), (3, 4)]
-testDistances = calculateDistances(testPoints)
-for i in testDistances:
-    print(i)
+nnastart = time.time()
+f, g = nearestNeighbourTSP(testPoints, "all")
+nnaend = time.time()
+print("Nearest Neighbour all cost:    ", g)
+print("Nearest Neighbour all time:    ", nnaend - nnastart)
 
-testLines, testNeighbors, testCost = greedyTSP(testPoints)
-print(testLines)
-print(testDistances)
-print("Cost total:", testCost)
-for i in range(len(testLines) + 1):
-    drawGraph(testPoints, testLines[:i])
-    sleep(0.3)
+
