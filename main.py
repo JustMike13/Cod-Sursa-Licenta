@@ -9,7 +9,6 @@ from Greedy import greedyTSP
 from CalculateDistances import calculateDistances
 from NearestInsertion import nearestInsertionTSP, nearestInsertion
 from NearestNeighbour import nearestNeighbourTSP
-from DynamicProgramming import DynamicProgrammingTSP
 from PointGenerator import generate, readPoints
 from TwoAproximation import twoAproximationTSP
 import time
