@@ -54,3 +54,45 @@ def drawCompleteGraf(points, cost = False, name = ""):
         plt.plot(lx, ly, linewidth=2, color='#1f77b4')
     plt.title(name)
     plt.show()
+
+if __name__ == "__main__":
+    a = (0, 0)
+    b = (2, 0)
+    c = (6, 0)
+    d = (8, 0)
+    x = (4, 3)
+    points = [a, b, c, d, x]
+    lines = [(a,b), (b,c), (c, d)]
+    lines2 = [(a,b), (b,x), (x, c), (c, d)]
+    px = [p[0] for p in points]
+    py = [p[1] for p in points]
+    sizes = [50 for i in points]
+    plt.scatter(px, py, s=sizes, vmin=0, vmax=10)
+    plt.annotate("A", (px[0], py[0]))
+    plt.annotate("B", (px[1], py[1]))
+    plt.annotate("C", (px[2], py[2]))
+    plt.annotate("D", (px[3], py[3]))
+    plt.annotate("X", (px[4], py[4]))
+    for line in lines:
+        lx = [l[0] for l in line]
+        ly = [l[1] for l in line]
+        plt.plot(lx, ly, linewidth=2, color='#1f77b4')
+    ax = plt.gca()
+    ax.set_xlim([-1, 9])
+    ax.set_ylim([-4, 4])
+    plt.show()
+    plt.scatter(px, py, s=sizes, vmin=0, vmax=10)
+    plt.annotate("A", (px[0], py[0]))
+    plt.annotate("B", (px[1], py[1]))
+    plt.annotate("C", (px[2], py[2]))
+    plt.annotate("D", (px[3], py[3]))
+    plt.annotate("X", (px[4], py[4]))
+    for line in lines2:
+        lx = [l[0] for l in line]
+        ly = [l[1] for l in line]
+        plt.plot(lx, ly, linewidth=2, color='#1f77b4')
+    plt.plot([b[0],c[0]], [b[1],c[1]], '--', linewidth=1, color='#1f77b4')
+    ax = plt.gca()
+    ax.set_xlim([-1, 9])
+    ax.set_ylim([-4, 4])
+    plt.show()

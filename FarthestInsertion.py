@@ -3,7 +3,7 @@ import random
 
 from Drawing import drawGraph
 from CalculateDistances import calculateDistances
-from PointGenerator import generate
+from PointGenerator import generate, readPoints
 
 distances = None
 l = None
@@ -14,8 +14,9 @@ def farthestInsertion(points, x = None):
     global l
     # o lista cu indicele tuturor punctelor care nu au fost adaugate in graf
     remainingPoints = [i for i in range(l)]
-    # o lista cu cel mai apropiat vecin al fiecarui punct
-    closestNeighbor = [0 for i in range(l)]
+    # o lista cu distanta dintre fiecare punct si graf
+    farthestNeighbor = distances[x].copy()
+    farthestNeighbor[x] = -1
     # o lista cu punctele adaugate in graf
     visitedPoints = []
     # lista intermediara de linii
@@ -30,6 +31,11 @@ def farthestInsertion(points, x = None):
         if distances[x][i] > maxCost and x != i:
             maxCost = distances[x][i]
             y = i
+    # updatez closestNeighbor
+    farthestNeighbor[y] = -1
+    for i in range(l):
+        if distances[i][y] < farthestNeighbor[i] and i!=y:
+            farthestNeighbor[i] = distances[i][y]
     # elimin punctele din lista de puncte ramase
     remainingPoints.remove(x)
     remainingPoints.remove(y)
@@ -41,11 +47,19 @@ def farthestInsertion(points, x = None):
     # caut un al treilea punct care sa fie cat mai departe de unul din punctele deja adaugate
     farthestPoint = None
     maxCost = 0
-    for newPoint in remainingPoints:
-        for oldPoint in visitedPoints:
-            if distances[newPoint][oldPoint] > maxCost:
-                maxCost = distances[newPoint][oldPoint]
-                farthestPoint = newPoint
+    # for newPoint in remainingPoints:
+    #     for oldPoint in visitedPoints:
+    #         if distances[newPoint][oldPoint] > maxCost:
+    #             maxCost = distances[newPoint][oldPoint]
+    #             farthestPoint = newPoint
+    for i in range(l):
+        if farthestNeighbor[i] > maxCost:
+            maxCost = farthestNeighbor[i]
+            farthestPoint = i
+    farthestNeighbor[farthestPoint] = -1
+    for i in range(l):
+        if farthestNeighbor[i] > distances[i][farthestPoint]:
+            farthestNeighbor[i] = distances[i][farthestPoint]
     # adaug punctul si laturile care i-l leaga de primele doua puncte in graf
     remainingPoints.remove(farthestPoint)
     visitedPoints.append(farthestPoint)
@@ -56,17 +70,27 @@ def farthestInsertion(points, x = None):
     # cat timp exista puncte de adaugat
     while len(remainingPoints) > 0:
         # caut punctul cel mai departe de graf
+        # maxCost = 0
+        # for newPoint in remainingPoints:
+        #     # pentru fiecare punct caut cel mai apropiat punct din graf
+        #     # aleg punctul cum distanta cea mai mare pana la cel mai apropiat punct
+        #     minCost = maxint
+        #     for oldPoint in visitedPoints:
+        #         if distances[newPoint][oldPoint] < minCost:
+        #             minCost = distances[newPoint][oldPoint]
+        #     if minCost > maxCost:
+        #         maxCost = minCost
+        #         farthestPoint = newPoint
+        farthestPoint = None
         maxCost = 0
-        for newPoint in remainingPoints:
-            # pentru fiecare punct caut cel mai apropiat punct din graf
-            # aleg punctul cum distanta cea mai mare pana la cel mai apropiat punct
-            minCost = maxint
-            for oldPoint in visitedPoints:
-                if distances[newPoint][oldPoint] < minCost:
-                    minCost = distances[newPoint][oldPoint]
-            if minCost > maxCost:
-                maxCost = minCost
-                farthestPoint = newPoint
+        for i in range(l):
+            if farthestNeighbor[i] > maxCost:
+                maxCost = farthestNeighbor[i]
+                farthestPoint = i
+        farthestNeighbor[farthestPoint] = -1
+        for i in range(l):
+            if farthestNeighbor[i] > distances[i][farthestPoint]:
+                farthestNeighbor[i] = distances[i][farthestPoint]
         # caut cea mai profitabila insertie
         # insertie inseamna ca aleg o latura din graf, conectez noul punct de capetele laturii si elimin latura initiala
         # avand sirul a - b - c - d, daca vreau sa adaug punctul x intre nodurile b si c
@@ -125,6 +149,7 @@ def farthestInsertionTSP(points):
 
 if __name__ == "__main__":
     testPoints = [(1, 3), (3, 2), (7, 4), (3, 5), (5.5, 6), (4, 4), (4, 3), (5, 3.5), (5, 2), (3, 4)]
+    # testPoints = readPoints(filename="test_points/100_test_points_00.txt")
     testLines, testCost = farthestInsertionTSP(testPoints)
     print(f"     NI result: {testCost}")
-    drawGraph(testPoints, testLines)
+    drawGraph(testPoints, testLines, f"Cost: {testCost}")

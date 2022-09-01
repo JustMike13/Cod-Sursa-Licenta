@@ -1,7 +1,7 @@
 from Backtracking import backtrackingTSP
 from Drawing import drawGraph, drawProgress
 from CalculateDistances import calculateDistances
-from PointGenerator import generate
+from PointGenerator import generate, readPoints
 import time
 
 maxint = 2147483647
@@ -10,7 +10,7 @@ def greedyTSP(points):
     l = len(points)
     lines = []
     # ordonez muchiile crescator
-    orderedDistances = orderAscending(distances)
+    orderedDistances = sortDistances(distances)
     # matrice de vecini
     neighbors = [[0 for i in range(l)] for i in range(l)]
     # salvez cea mai scurta muchie si distanta ei
@@ -120,14 +120,68 @@ def orderAscending(dist):
                             break
     return orderedList
 
+def sortDistances(dist):
+    l = len(dist)
+    myList = []
+    for i in range(l):
+        for j in range(i + 1, l):
+            myDist = (i, j, dist[i][j])
+            myList.append(myDist)
+
+    sortedDist = quickSortDistances(myList)
+    sortedList = [(i[0],i[1]) for i in sortedDist]
+    return sortedList
+
+def quickSortDistances(dist):
+    noOfDist = len(dist)
+    lowerList = []
+    greaterList = []
+    equalList = []
+    if noOfDist == 0:
+        return []
+    elif noOfDist == 1:
+        return dist
+    elif noOfDist == 2:
+        a, b = dist
+        if a[2] < b[2]:
+            return [a, b]
+        else:
+            return [b, a]
+    else:
+        pivot = dist[0]
+        pivot = pivot[2]
+        for d in dist:
+            if d[2] < pivot:
+                lowerList.append(d)
+            elif d[2] == pivot:
+                equalList.append(d)
+            else:
+                greaterList.append(d)
+        return quickSortDistances(lowerList) + equalList + quickSortDistances(greaterList)
+
+
 
 if __name__ == "__main__":
-    testPoints = [(1, 3), (3, 2), (7, 4), (3, 5), (5.5, 6), (4, 4), (4, 3), (5, 3.5), (5, 2), (3, 4)]
-    # testDistances = calculateDistances(testPoints)
+    # testPoints = [(1, 3), (3, 2), (7, 4), (3, 5), (5.5, 6), (4, 4), (4, 3), (5, 3.5), (5, 2), (3, 4)]
+    testPoints = readPoints(filename="test_points/200_test_points_00.txt")
+    testDistances = calculateDistances(testPoints)
+    timeStart = time.time()
+    a = orderAscending(testDistances)
+    # print(a)
+    timeEnd = time.time()
+    timeDif = timeEnd - timeStart
+    print(f"bubbleSort time : {timeDif}")
+    timeStart = time.time()
+    a = sortDistances(testDistances)
+    # print(a)
+    timeEnd = time.time()
+    timeDif = timeEnd - timeStart
+    print(f"quickSort time : {timeDif}")
+
     # timeStart = time.time()
-    testLines, testCost = greedyTSP(testPoints)
+    # testLines, testCost = greedyTSP(testPoints)
     # timeEnd = time.time()
     # timeDif = timeEnd - timeStart
-    print(f"     Greedy result: {testCost}")
+    # print(f"     Greedy result: {testCost}")
     # print(f"     Greedy time : {timeDif}")
-    drawGraph(testPoints, testLines, f"Greedy, {testCost}")
+    # drawGraph(testPoints, testLines, f"Greedy, {testCost}, {timeDif}")

@@ -65,7 +65,7 @@ if __name__ == "__main__":
     # generate(number = 1000,  filename = "test_points/1000_test_points.txt")
     # generate(number = 5000,  filename = "test_points/5000_test_points.txt")
     # generate(number = 10000, filename = "test_points/10000_test_points.txt")
-    for i in range(3):
+    for i in range(20):
         if i < 10:
             nr = "0" + str(i)
         else:

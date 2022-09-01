@@ -8,7 +8,6 @@ from PointGenerator import generate
 distances = None
 # l = 0
 maxint = 2147483647
-
 def cheapestInsertion(points, x):
     global distances
     global l
@@ -35,6 +34,7 @@ def cheapestInsertion(points, x):
     visitedPoints.append(y)
     # adaug latura in graf
     linesAux.append((x, y))
+
     # pentru primele 3 puncte vreau sa adaug toate cele 3 laturi care le leaga, mai departe o sa elimin cate o latura si o sa adaug alte doua cu fiecare insertie
     z = None # al treilea punct
     insertionCost = maxint
@@ -92,6 +92,8 @@ def cheapestInsertionTSP(points):
     distances = calculateDistances(points)
     minCost = maxint
     tour = None
+    # x = random.randint(0, l-1)
+    # tour, minCost = cheapestInsertion(points, x)
     for i in range(l):
         a, b = cheapestInsertion(points, i)
         if b < minCost:

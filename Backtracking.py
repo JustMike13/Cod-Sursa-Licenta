@@ -41,12 +41,15 @@ def backtrackingRecursive(list, tour = ()):
         aux = tour + (list[i],)
         if len(list) == 1:
             tourLen = tourLength(aux)
+            index+=1
             if tourLen < minCost:
                 minCost = tourLen
                 minTour = aux
         else:
             recursiveList = list[:i] + list[i + 1:]
             backtrackingRecursive(recursiveList, aux)
+    if(index%1000 == 0):
+        print(index)
     return minTour, minCost
 
 
@@ -70,28 +73,13 @@ if __name__ == "__main__":
     # drawProgress(testPoints, testLines)
     nr = 10
     results = []
-    for i in range(3):
-        print(f"setul de date nr {i}")
-        points = generate(nr)
-        BTStart = time.time()
-        a, b = backtrackingTSP(points)
-        BTEnd = time.time()
-        BTDif = BTEnd - BTStart
-        print(f"     BT result: {b}")
-        print(f"     BT time: {BTDif}")
 
-        timeStart = time.time()
-        testLines, testCost = greedyTSP(points)
-        timeEnd = time.time()
-        timeDif = timeEnd - timeStart
-        print(f"     Greedy result: {testCost}")
-        print(f"     Greedy time : {timeDif}\n\n")
-        results.append((b, testCost))
-    sum = 0
-    for r in results:
-        bt, gr = r
-        dif = gr - bt
-        procent = (dif * 100) / bt
-        sum += procent
-    print(f"\n\n\nCrestere medie de {sum / len(results)} procente")
+    points = [(1, 3), (3, 2), (7, 4), (3, 5), (5.5, 6), (4, 4), (4, 3), (5, 3.5), (8, 9), (3, 9)]
+    BTStart = time.time()
+    a, b = backtrackingTSP(points)
+    BTEnd = time.time()
+    BTDif = BTEnd - BTStart
+    print(f"     BT result: {b}")
+    print(f"     BT time: {BTDif}")
+
 

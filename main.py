@@ -1,6 +1,8 @@
-import matplotlib.pyplot as plt
-from time import sleep
+import random
 
+import matplotlib.pyplot as plt
+import time
+from time import sleep
 from Backtracking import backtrackingTSP
 from CheapestInsertion import cheapestInsertionTSP
 from Drawing import drawGraph, drawCompleteGraf
@@ -11,7 +13,6 @@ from NearestInsertion import nearestInsertionTSP, nearestInsertion
 from NearestNeighbour import nearestNeighbourTSP
 from PointGenerator import generate, readPoints
 from TwoAproximation import twoAproximationTSP
-import time
 
 def nearestInsertionTest():
     print("Datele de intrare de testare si nod de start aleator:\n")
@@ -25,7 +26,8 @@ def nearestInsertionTest():
                 nr = "0" + str(i)
             else:
                 nr = str(i)
-            points = readPoints("test_points/" + str(nrPoints) + "_test_points_" + nr + ".txt")
+            # points = readPoints("test_points/" + str(nrPoints) + "_test_points_" + nr + ".txt")
+            points = generate(nrPoints)
             timeStart = time.time()
             a, b = nearestInsertionTSP(points)
             timeEnd = time.time()
@@ -69,8 +71,9 @@ def test10p():
 
 def nearestNeighbourTest():
     # points = readPoints()
-    print("Datele de intrare de testare:\n")
-    for nrPoints in [50, 100, 200, 300]:
+    # print("Datele de intrare de testare:\n")
+    print("Datele de intrare aleatoare:\n")
+    for nrPoints in [50, 100, 200, 300, 500]:
         print(f"{nrPoints} puncte:")
         sumCost = 0
         sumTime = 0
@@ -80,9 +83,10 @@ def nearestNeighbourTest():
                 nr = "0" + str(i)
             else:
                 nr = str(i)
-            points = readPoints("test_points/" + str(nrPoints) + "_test_points_" + nr + ".txt")
+            # points = readPoints("test_points/" + str(nrPoints) + "_test_points_" + nr + ".txt")
+            points = generate(nrPoints)
             timeStart = time.time()
-            a, b = nearestNeighbourTSP(points, "random")
+            a, b = nearestNeighbourTSP(points, "all")
             timeEnd = time.time()
             timeDif = timeEnd - timeStart
             print(f"    Cost: {b}\n    Durata: {timeDif}")
@@ -107,7 +111,7 @@ def nearestNeighbourTest():
     #     print(f"     Durata medie: {timeTotal / 100}\n\n")
 
 def greedyTest():
-    for nrPoints in [50, 100]:
+    for nrPoints in [50, 100, 200, 300, 500]:
         print(f"{nrPoints} puncte:")
         sumCost = 0
         sumTime = 0
@@ -117,7 +121,8 @@ def greedyTest():
                 nr = "0" + str(i)
             else:
                 nr = str(i)
-            points = readPoints("test_points/" + str(nrPoints) + "_test_points_" + nr + ".txt")
+            # points = readPoints("test_points/" + str(nrPoints) + "_test_points_" + nr + ".txt")
+            points = generate(nrPoints)
             timeStart = time.time()
             a, b = greedyTSP(points)
             timeEnd = time.time()
@@ -129,21 +134,18 @@ def greedyTest():
 
 def cheapestInsertionTest():
     print("Cheapest insertion")
-    print("Datele de intrare de testare aleatoare si toate nodurile de start:\n")
-    for nrPoints in [50, 100, 200, 300]:
+    print("Datele de intrare aleatoare si toate nodurile de start:\n")
+    for nrPoints in [300, 500]:
         print(f"{nrPoints} puncte:")
         sumCost = 0
         sumTime = 0
-        if nrPoints < 300:
-            nrIter = 20
-        else:
-            nrIter = 5
-        for i in range(nrIter):
+
+        for i in range(5):
             print(f"  Multimea de date numarul {i}")
-            # if i < 10:
-            #     nr = "0" + str(i)
-            # else:
-            #     nr = str(i)
+            if i < 10:
+                nr = "0" + str(i)
+            else:
+                nr = str(i)
             # points = readPoints("test_points/" + str(nrPoints) + "_test_points_" + nr + ".txt")
             points = generate(nrPoints)
             timeStart = time.time()
@@ -153,12 +155,12 @@ def cheapestInsertionTest():
             print(f"    Cost: {b}\n    Durata: {timeDif}")
             sumCost += b
             sumTime += timeDif
-        print(f"      Cost total: {sumCost}\n      Durata medie: {sumTime / nrIter}\n\n\n")
+        print(f"      Cost total: {sumCost}\n      Durata medie: {sumTime / 5}\n\n\n")
 
 def farthestInsertionTest():
     print("\n\nFarthest insertion")
-    print("Datele de intrare aleatoare si nod de start aleator:\n")
-    for nrPoints in [50, 100, 200, 300]:
+    print("Datele de intrare de test si nod de start aleator:\n")
+    for nrPoints in [50, 100, 200, 300, 500]:
         print(f"{nrPoints} puncte:")
         sumCost = 0
         sumTime = 0
@@ -206,13 +208,24 @@ def twoAproximationTest():
 
 
 if __name__ == "__main__":
-    test10p()
+    # test10p()
     # greedyTest()
     # nearestNeighbourTest()
     # nearestInsertionTest()
     # cheapestInsertionTest()
     # farthestInsertionTest()
-    # twoAproximationTest()
+    twoAproximationTest()
+    # points = generate(300, interval= (0, 1000))
+    # a, b = nearestNeighbourTSP(points, "all")
+    # drawGraph(points, a, b)
+    # points = generate(300, interval= (0, 100))
+    # a, b = nearestNeighbourTSP(points, "all")
+    # drawGraph(points, a, b)
+    # points = readPoints("test_points/10_test_points.txt")
+    # points = [(9, 2), (8, 5),(9, 9), (1, 10), (3, 5)]
+    # a, b = backtrackingTSP(points)
+    # drawGraph(points, a, f"Soluția optima, Cost = {b}")
+
 
 
 
